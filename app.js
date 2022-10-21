@@ -28,9 +28,19 @@ connection.connect(function(err) {
 });
 //*****************************JOB CARD************************************ */
 //GET DATA
-app.get('/jodcard', (req,res) => {
+app.get('/jobcard', (req,res) => {
     let sql = `SELECT * FROM jobcard`
     connection.query(sql,(err,results)=>{
+        if(err) throw err
+        else{
+            res.send(results).status(200)
+        }
+    })
+})
+//GET DATA BY ID
+app.get('/jobcard/:id', (req,res) => {
+    let sql = `SELECT * FROM jobcard WHERE jobcard_id ='${req.params.id}' `
+    connection.query(sql, [req.params.id], (err,results)=>{
         if(err) throw err
         else{
             res.send(results).status(200)
