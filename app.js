@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')   //to pass json data
 const mysql = require('mysql')
 
 const app = express() //app stores all the methods
-const port = process.env.PORT || 5000 //for publishing app
+const port = process.env.PORT || 3000 //for publishing app
 
 app.use(bodyParser.urlencoded({ extended: false}))
 
@@ -63,6 +63,28 @@ app.post('/jobcard', (req,res) => {
         console.log(req.body)
     })
 })
+//*****************************REQUEST*************************************** */
+//GET DATA
+app.get('/request', (req,res) => {
+    let sql = `SELECT * FROM request`
+    connection.query(sql,(err,results)=>{
+        if(err) throw err
+        else{
+            res.send(results).status(200)
+        }
+    })
+})
+//GET DATA BY ID
+app.get('/request/:id', (req,res) => {
+    let sql = `SELECT * FROM request WHERE request_id ='${req.params.id}' `
+    connection.query(sql, [req.params.id], (err,results)=>{
+        if(err) throw err
+        else{
+            res.send(results).status(200)
+        }
+    })
+})
+//ADD DATA
 //******************************************************************** */
 // //Get all reports
 // app.get('', (req, res) => {
