@@ -58,7 +58,7 @@ app.post('/jobcard', (req,res) => {
     connection.query(sql, params, (err, results)=>{
         if(err) throw err
         else{
-            res.send( `Record ${params.category} has been added`).status(200)
+            res.send( `Record ${params.jobcard_id} has been added`).status(200)
         }
         console.log(req.body)
     })
@@ -85,6 +85,19 @@ app.get('/request/:id', (req,res) => {
     })
 })
 //ADD DATA
+app.post('/request', (req,res) => {
+    const params = req.body //get data
+    let sql = `INSERT INTO request VALUES (NULL, '${req.body.venue}', '${req.body.time_requested}', '${req.body.date}', 
+                                        '${req.body.picture}', '${req.body.staff_number}')`;
+    console.log(sql);
+    connection.query(sql, params, (err, results)=>{
+        if(err) throw err
+        else{
+            res.send( `Record ${params.request_id} has been added`).status(200)
+        }
+        console.log(req.body)
+    })
+})
 //******************************************************************** */
 // //Get all reports
 // app.get('', (req, res) => {
