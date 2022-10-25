@@ -15,70 +15,14 @@ const pool = mysql.createPool({
     host            : 'localhost',
     user            : 'root',
     password        : '',
-    database        : 'technical_services'
+    database        : 'database'
 })
 
-//Get all reports
+//Get all user
 app.get('', (req, res) => {
     pool.getConnection((err, connection) =>{
         if(err) throw err
-        console.log(' connected as id ${connection.threadId}')
-
-        connection.query(' SELECT * from report', (err, rows) => {
-            connection.release()// return the connection to pool
-
-            if(!err) {
-                res.send(rows)
-            }else {'';;
-                console.log(err) 
-            }
-        })
-    })
-})  
-
-//Get a report by ID
-app.get('/:id', (req, res) => {
-    pool.getConnection((err, connection) =>{
-        if(err) throw err
-        console.log(' connected as id ${connection.threadId}')
-
-        connection.query(' SELECT  from report WHERE report_id = ?',[req.params.id], (err, rows) => {
-            connection.release()// return the connection to pool
-
-            if(!err) {
-                res.send(rows)
-            }else {
-                console.log(err)
-            }
-        })
-    })
-})
-
-//Get all users
-app.get('', (req, res) => {
-    pool.getConnection((err, connection) =>{
-        if(err) throw err
-
-        console.log(' connected as id ${connection.threadId}')
-
-        connection.query(' SELECT * from user', (err, rows) => {
-            connection.release()// return the connection to pool
-
-            if(!err) {
-                res.send(rows)
-            }else {
-                console.log(err)
-            }
-        })
-    })
-})  
-
-
-//Get all feedback
-app.get('', (req, res) => {
-    pool.getConnection((err, connection) =>{
-        if(err) throw err
-        console.log(' connected as id ${connection.threadId}')
+        console.log(' connected as feedback_id ${connection.threadId}')
 
         connection.query(' SELECT * from feedback', (err, rows) => {
             connection.release()// return the connection to pool
@@ -90,15 +34,15 @@ app.get('', (req, res) => {
             }
         })
     })
-})  
+})
 
-//Get all request
-app.get('', (req, res) => {
+//Get a user by ID
+app.get('/:feedback_id', (req, res) => {
     pool.getConnection((err, connection) =>{
         if(err) throw err
-        console.log(' connected as id ${connection.threadId}')
+        console.log(' connected as feedback_id ${connection.threadId}')
 
-        connection.query(' SELECT * from request', (err, rows) => {
+        connection.query(' SELECT * from feedback WHERE feedback_id = ?',[req.params.userID], (err, rows) => {
             connection.release()// return the connection to pool
 
             if(!err) {
@@ -108,14 +52,77 @@ app.get('', (req, res) => {
             }
         })
     })
-})  
+})
+
+//Delete a record / user
+app.delete('/:feedback_id', (req, res) => {
+    pool.getConnection((err, connection) =>{
+        if(err) throw err
+        console.log(' connected as feedback_id ${connection.threadId}')
+
+        connection.query(' DELETE from feedback WHERE feedback_id =?', [req.params.feedback_id],(err, rows) => {
+            connection.release()// return the connection to pool
+
+            if(!err) {
+                res.send('user with the record feedback_id: ${[req.params.userID]} has been deleted')
+            }else {
+                console.log(err)
+            }
+        })
+    })
+})
+
+//Add a record / feedback
+app.post('', (req, res) => {
+    pool.getConnection((err, connection) =>{
+        if(err) throw err
+        console.log(' connected as feedback_id ${connection.threadId}')
+
+        const params = req.body
+        const feedback_id = req.body.feedback_id;
+        const staff_id = req.body.staff_id;
+        const artisan_id = req.body.artisan_id;
+        const admin_id = req.body.admin_id;
+        const status_id = req.body.status_id;
+        const description = req.body.description;
+        const request_id = req.body.request_id;
+
+        connection.query(' INSERT INTO feedback(feedback_id,staff_id,artisan_id,admin_id,status_id,description,request_id) values("'+feedback_id+'","'+staff_id+'","'+artisan_id+'","'+admin_id+'","'+status_id+'","'+description+'","'+request_id+'")', params ,(err, rows) => {
+          //  connection.release()// return the connection to pool
+
+            if(!err) {
+                res.send('user with the record feedback_id: ${params.userID} has been added')
+            }else {
+                console.log(err)
+            }
+        })
+
+        console.log(req.body)
+    })
+})
+
+//update a record / feedback
+app.put('', (req, res) => {
+    pool.getConnection((err, connection) =>{
+        if(err) throw err
+        console.log(' connected as feedback_id ${connection.threadId}')
+
+        const {feedback_id,  tagline, description} = req.body
 
 
+        connection.query(' UPDATE feedback SET name =? WHERE feedback_id =?',[ feedback_id], params ,(err, rows) => {
+            connection.release()// return the connection to pool
 
+            if(!err) {
+                res.send('user with the record userID: ${params.feedback_id} has been added')
+            }else {
+                console.log(err)
+            }
+        })
 
-
-
-
+        console.log(req.body)
+    })
+})
 
 
 
