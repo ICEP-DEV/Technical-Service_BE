@@ -1,204 +1,26 @@
 const express = require('express')
 const bodyParser = require('body-parser')   //to pass json data
-const mysql = require('mysql')
+const mysql = require('mysql2')
+const cors = require ('cors')
 
 const app = express() //app stores all the methods
 const port = process.env.PORT || 3000 //for publishing app
 
-app.use(bodyParser.urlencoded({ extended: false}))
+const jobcard = require('./routes/jobcard')
+const request = require('./routes/request')
+const report = require('./routes/report')
+const jobstatus = require('./routes/jobstatus')
 
+app.use(bodyParser.urlencoded({ extended: false})) //ensure xampp is using the body parser
 app.use(bodyParser.json())
 
-
-//CONNECTING TO THE DB
-const connection = mysql.createConnection({
-    connectionLimit : 10,
-    host            : 'localhost',
-    user            : 'root',
-    password        : '',
-    database        : 'ts_database'
-})
-//CHECK CONNECTION
-connection.connect(function(err) {
-    if (err){
-        console.error('error connecting ' + err.stack);
-        return;
-    }
-    console.log('connected as [id ' + connection.threadId)
-});
-//*****************************JOB CARD************************************ */
-//GET DATA
-app.get('/jobcard', (req,res) => {
-    let sql = `SELECT * FROM jobcard`
-    connection.query(sql,(err,results)=>{
-        if(err) throw err
-        else{
-            res.send(results).status(200)
-        }
-    })
-})
-//GET DATA BY ID
-app.get('/jobcard/:id', (req,res) => {
-    let sql = `SELECT * FROM jobcard WHERE jobcard_id ='${req.params.id}' `
-    connection.query(sql, [req.params.id], (err,results)=>{
-        if(err) throw err
-        else{
-            res.send(results).status(200)
-        }
-    })
-})
-//ADD DATA
-app.post('/jobcard', (req,res) => {
-    const params = req.body //get data
-
-    let sql = `INSERT INTO jobcard VALUES (NULL, '${req.body.request_id}', '${req.body.venue}', '${req.body.description}',
-                                        '${req.body.category}','${req.body.status}', '${req.body.picture}', '${req.body.createdAt}',
-                                         '${req.body.staff_number}', '${req.body.staff_name}')`;
-    console.log(sql);
-    connection.query(sql, params, (err, results)=>{
-        if(err) throw err
-        else{
-            res.send( `Record ${params.jobcard_id} has been added`).status(200)
-        }
-        console.log(req.body)
-    })
-})
-//*****************************REQUEST*************************************** */
-//GET DATA
-app.get('/request', (req,res) => {
-    let sql = `SELECT * FROM request`
-    connection.query(sql,(err,results)=>{
-        if(err) throw err
-        else{
-            res.send(results).status(200)
-        }
-    })
-})
-//GET DATA BY ID
-app.get('/request/:id', (req,res) => {
-    let sql = `SELECT * FROM request WHERE request_id ='${req.params.id}' `
-    connection.query(sql, [req.params.id], (err,results)=>{
-        if(err) throw err
-        else{
-            res.send(results).status(200)
-        }
-    })
-})
-//ADD DATA
-app.post('/request', (req,res) => {
-    const params = req.body //get data
-    let sql = `INSERT INTO request VALUES (NULL, '${req.body.venue}', '${req.body.time_requested}', '${req.body.date}', 
-                                        '${req.body.picture}', '${req.body.staff_number}')`;
-    console.log(sql);
-    connection.query(sql, params, (err, results)=>{
-        if(err) throw err
-        else{
-            res.send( `Record ${params.request_id} has been added`).status(200)
-        }
-        console.log(req.body)
-    })
-})
-//******************************************************************** */
-// //Get all reports
-// app.get('', (req, res) => {
-//     pool.getConnection((err, connection) =>{
-//         if(err) throw err
-//         console.log(' connected as id ${connection.threadId}')
-
-//         connection.query(' SELECT * from report', (err, rows) => {
-//             connection.release()// return the connection to pool
-
-//             if(!err) {
-//                 res.send(rows)
-//             }else {'';;
-//                 console.log(err) 
-//             }
-//         })
-//     })
-// })  
-
-// //Get a report by ID
-// app.get('/:id', (req, res) => {
-//     pool.getConnection((err, connection) =>{
-//         if(err) throw err
-//         console.log(' connected as id ${connection.threadId}')
-
-//         connection.query(' SELECT  from report WHERE report_id = ?',[req.params.id], (err, rows) => {
-//             connection.release()// return the connection to pool
-
-//             if(!err) {
-//                 res.send(rows)
-//             }else {
-//                 console.log(err)
-//             }
-//         })
-//     })
-// })
-
-// //Get all users
-// app.get('', (req, res) => {
-//     pool.getConnection((err, connection) =>{
-//         if(err) throw err
-
-//         console.log(' connected as id ${connection.threadId}')
-
-//         connection.query(' SELECT * from user', (err, rows) => {
-//             connection.release()// return the connection to pool
-
-//             if(!err) {
-//                 res.send(rows)
-//             }else {
-//                 console.log(err)
-//             }
-//         })
-//     })
-// })  
+app.use(bodyParser.json())
+app.use(cors({origin:"*"}))
+app.use('/',request)
+app.use('/',jobcard)
+app.use('/',report)
+app.use('/', jobstatus)
 
 
-// //Get all feedback
-// app.get('', (req, res) => {
-//     pool.getConnection((err, connection) =>{
-//         if(err) throw err
-//         console.log(' connected as id ${connection.threadId}')
-
-//         connection.query(' SELECT * from feedback', (err, rows) => {
-//             connection.release()// return the connection to pool
-
-//             if(!err) {
-//                 res.send(rows)
-//             }else {
-//                 console.log(err)
-//             }
-//         })
-//     })
-// })  
-
-// //Get all request
-// app.get('', (req, res) => {
-//     pool.getConnection((err, connection) =>{
-//         if(err) throw err
-//         console.log(' connected as id ${connection.threadId}')
-
-//         connection.query(' SELECT * from request', (err, rows) => {
-//             connection.release()// return the connection to pool
-
-//             if(!err) {
-//                 res.send(rows)
-//             }else {
-//                 console.log(err)
-//             }
-//         })
-//     })
-// })  
-//-*********************************************************************
-
-
-
-
-
-
-
-
-
-//Listen on environment port or 5000
+//Listen on environment port or 3000
 app.listen(port, () => console.log(`Listen on port ${port}`))
