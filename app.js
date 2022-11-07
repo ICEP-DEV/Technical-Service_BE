@@ -11,6 +11,21 @@ const request = require('./routes/request')
 const report = require('./routes/report')
 const jobstatus = require('./routes/jobstatus')
 
+// //IMPORT FILE
+// const path = require('path')
+// const multer = require('multer')
+// const storage = multer.diskStorage({
+//     destination:(req,file,cb) => {  //call back function
+//         cb(null, 'images');
+//     },
+//     filename: (req,file, cd)=>{
+//         console.log(file);
+//         cb(null, Date.now() + path.extname(file.originalname));
+//     },
+// });
+// const upload = multer({storage: storage})
+
+
 app.use(bodyParser.urlencoded({ extended: false})) //ensure xampp is using the body parser
 app.use(bodyParser.json())
 
@@ -20,6 +35,9 @@ app.use('/',request)
 app.use('/',jobcard)
 app.use('/',report)
 app.use('/', jobstatus)
+
+
+
 
 
 //Listen on environment port or 3000

@@ -30,8 +30,8 @@ app.post('/jobcard', (req,res) => {
     const params = req.body //get data
 
     let sql = `INSERT INTO jobcard VALUES (NULL, '${req.body.request_id}', '${req.body.venue}', '${req.body.description}',
-                                        '${req.body.category}','${req.body.status}', '${req.body.picture}', '${req.body.createdAt}',
-                                         '${req.body.staff_number}', '${req.body.staff_name}')`;
+                                        '${req.body.category}', '${req.body.picture}', '${req.body.createdAt}', '${req.body.staff_name}',
+                                        '${req.body.staff_number}')`;
     console.log(sql);
     connection.query(sql, params, (err, results)=>{
         if(err) throw err
@@ -41,5 +41,29 @@ app.post('/jobcard', (req,res) => {
         console.log(req.body)
     })
 })
+//***************************************IMPORT IMAGE************************************************* */
 
+//IMPORT FILE
+const path = require('path')
+const multer = require('multer')
+const storage = multer.diskStorage({
+    destination:(req,file,cb) => {  //call back function
+        cb(null, 'images');
+    },
+    filename: (req,file, cd)=>{
+        console.log(file);
+        cb(null, Date.now() + path.extname(file.originalname));
+    },
+});
+const upload = multer({storage: storage})
+
+app.set("View engine", "ejs");
+
+// app.get("/jobcord", (req,res)=>{ //  /jobcard
+//     res.render("upload");
+// });
+
+app.post("/jobcard", upload.single('image'), (req,res)=>{ //input name = image
+    res.send("upload");
+});
 module.exports = app;
