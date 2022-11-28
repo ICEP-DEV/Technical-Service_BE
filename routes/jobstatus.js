@@ -26,19 +26,17 @@ app.get('/jobstatus/:id', (req,res) => {
     })
 })
 //update DATA
-app.put('/jobstatus', (req,res) => {
+app.put('/jobstatus/:id', (req,res) => {
     //data destructuring
-    const params = req.body //get data
-    const {jobstatus_id, jobstatus, jobcard_id} = req.body //get data and store it in the variable
+    const jobstatus_id = req.params.id;
+    const jobstatus = req.body.jobstatus;
 
-    let sql = `UPDATE jobstatus SET jobstatus = ? WHERE jobstatus_id=?`;
-    console.log(sql);
-    connection.query(sql, [jobstatus_id, jobstatus, jobcard_id], (err, results)=>{
+    let sql = `UPDATE jobstatus SET jobstatus=? WHERE jobstatus_id ='${req.params.id}'`
+    connection.query(sql, [jobstatus, jobstatus_id], (err, results)=>{
         if(err) throw err
         else{
-            res.send( `Record ${params.jobstatus_id} has been updated`).status(200)
+            res.send("UPDATED")
         }
-        console.log(req.body)
     })
 })
 module.exports = app;

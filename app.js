@@ -6,39 +6,33 @@ const cors = require ('cors')
 const app = express() //app stores all the methods
 const port = process.env.PORT || 3000 //for publishing app
 
+//WORKING WITH AN IMAGE
+const fs = require('fs')    //file system module
+const multer = require('multer')
+
+//ROUTES
 const jobcard = require('./routes/jobcard')
-const request = require('./routes/request')
-const report = require('./routes/report')
+const image = require('./routes/image')
+// const email = require('./routes/email')
+const registration = require('./routes/registration')
+const response = require('./routes/response')
 const jobstatus = require('./routes/jobstatus')
-
-// //IMPORT FILE
-// const path = require('path')
-// const multer = require('multer')
-// const storage = multer.diskStorage({
-//     destination:(req,file,cb) => {  //call back function
-//         cb(null, 'images');
-//     },
-//     filename: (req,file, cd)=>{
-//         console.log(file);
-//         cb(null, Date.now() + path.extname(file.originalname));
-//     },
-// });
-// const upload = multer({storage: storage})
-
+const report = require('./routes/report')
 
 app.use(bodyParser.urlencoded({ extended: false})) //ensure xampp is using the body parser
 app.use(bodyParser.json())
-
-app.use(bodyParser.json())
 app.use(cors({origin:"*"}))
-app.use('/',request)
 app.use('/',jobcard)
-app.use('/',report)
+app.use('/',image)
+// app.use('/',email)
+app.use('/',registration)
+app.use('/',response)
 app.use('/', jobstatus)
 
 
-
-
+app.use('/', (req, res)=>{
+res.json('Endpoint')
+})
 
 //Listen on environment port or 3000
 app.listen(port, () => console.log(`Listen on port ${port}`))
