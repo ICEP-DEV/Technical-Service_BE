@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2022 at 03:21 PM
+-- Generation Time: Nov 29, 2022 at 08:27 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -45,17 +45,11 @@ CREATE TABLE `jobcard` (
 
 INSERT INTO `jobcard` (`jobcard_id`, `request_id`, `venue`, `description`, `category`, `picture`, `createdAt`, `staff_name`, `staff_number`) VALUES
 (1, 1, '45-5', 'idk', 'Electrical', 'http://url_pic', '2022-11-02', 'Thabo', '21900000'),
-(50, 0, '78-9', 'undefined', 'undefined', 'undefined', '2022-11-08', 'zani', 'undefined'),
-(63, 0, 'undefined', 'undefined', 'undefined', 'undefined', '0000-00-00', 'undefined', 'undefined'),
-(64, 0, 'undefined', 'undefined', 'undefined', 'undefined', '0000-00-00', 'undefined', 'undefined'),
-(65, 0, '6-98', 'yfkjcvhhbn', '1', 'undefined', '2022-11-09', 'nuri', '2180000'),
-(66, 0, '5-9', 'jgbnm', '2', 'undefined', '2022-11-09', 'zani', '217000'),
-(67, 0, 'B9', 'xxxx', '2', 'undefined', '2022-11-09', 'nuri', '217000'),
-(68, 0, 'undefined', 'undefined', 'undefined', 'undefined', '0000-00-00', 'undefined', 'undefined'),
-(69, 6, 'B15G01', 'uvele ubone kuthi wee', 'Software', 'http://url', '2022-10-24', 'Banele', '2170000'),
-(70, 6, 'B15G01', 'uvele ubone kuthi wee', 'Software', 'http://url', '2022-10-24', 'Banele', '2170000'),
-(71, 6, 'B15G01', 'uvele ubone kuthi wee', 'Software', 'http://url', '2022-10-24', 'Banele', '2170000'),
-(72, 6, 'B15G01', 'uvele ubone kuthi wee', 'Software', 'http://url', '2022-10-24', 'Banele', '2170000');
+(73, 6, 'B15G01', 'uvele ubone kuthi wee', 'Software', 'http://url', '2022-10-24', 'Banele', '2170000'),
+(74, 6, 'B15G01', 'uvele ubone kuthi wee', 'Software', 'http://url', '2022-10-24', 'Banele', '2170000'),
+(75, 0, 'thabo', 'hcg,kjbnm,', '1', 'undefined', '2022-11-28', 'thabo', 'thabo'),
+(76, 0, 'B9', 'fbgjmu,', '1', 'undefined', '2022-11-28', 'thabo', '21784596'),
+(77, 0, 'B7', 'enjkefiehfer', '2', 'undefined', '2022-11-28', 'pal', '217898989');
 
 -- --------------------------------------------------------
 
@@ -108,7 +102,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `name`, `surname`, `contact`, `email_address`, `password`, `venue`, `department_id`, `staff_number`) VALUES
 (3, 'Banele', 'Mpofu', '0136651234', 'mpofu@gmail', '123456', 'B15G01', 1, '21700000'),
-(5, 'Nathi', 'Mpofu', '0136657894', 'mpofu1@gmail.com', '123456', 'B15', 0, NULL);
+(5, 'Nathi', 'Mpofu', '0136657894', 'mpofu1@gmail.com', '123456', 'B15', 0, NULL),
+(6, 'Nathi', 'Mpofu', '0136657894', 'mpofu2@gmail.com', '123456', 'B15', 0, NULL),
+(7, 'Nathi', 'Mpofu', '0136657894', 'mpofu3@gmail.com', '123456', 'B15', 0, NULL);
 
 --
 -- Indexes for dumped tables
@@ -140,7 +136,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `jobcard`
 --
 ALTER TABLE `jobcard`
-  MODIFY `jobcard_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `jobcard_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `request`
@@ -152,7 +148,7 @@ ALTER TABLE `request`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

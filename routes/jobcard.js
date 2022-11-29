@@ -48,7 +48,7 @@ app.post('/post_jobcard', (req,res) => {
     connection.query(sql, params, (err, results)=>{
         if(err) throw err
         else{
-            res.send( `Record ${params.jobcard_id} has been DELETE`).status(200)
+            res.send( `Record ${params.jobcard_id} has been ADDED`).status(200)
         }
         console.log(req.body)
     })
