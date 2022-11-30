@@ -28,7 +28,7 @@ app.use('/',image)
 app.use('/',registration)
 app.use('/',response)
 app.use('/', jobstatus)
-
+app.use('/', report)
 
 app.use('/', (req, res)=>{
 res.json('Endpoint')

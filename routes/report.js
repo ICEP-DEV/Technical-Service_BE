@@ -41,21 +41,25 @@ app.post('/report', (req,res) => {
         console.log(req.body)
     })
 })
-
 //update DATA
-app.put('/report', (req,res) => {
+app.put('/report/:id', (req,res) => {
     //data destructuring
-    const params = req.body //get data
-    const {report_id, description, date, category_type, staff_name, artisan_name, issue} = req.body //get data and store it in the variable
+    const report_id = req.params.id;
+    const issue = req.body.issue;
+    const description = req.body.description;
+    const date = req.body.date
+    const category_type = req.body.category_type;
+    const staff_name = req.body.staff_name;
+    const artisan_name = req.body.artisan_name;
+    // const params = req.body //get data
+    // const {report_id, description, date, category_type, staff_name, artisan_name, issue} = req.body //get data and store it in the variable
 
-    let sql = `UPDATE report SET description = ?, date = ?, category_type = ?, staff_name = ?, artisan_name = ?, issue = ? WHERE report_id=?`;
-    console.log(sql);
+    let sql = `UPDATE report SET description = ?, date = ?, category_type = ?, staff_name = ?, artisan_name = ?, issue = ? WHERE report_id='${req.params.id}'`;
     connection.query(sql, [description, date, category_type, staff_name, artisan_name, issue, report_id], (err, results)=>{
         if(err) throw err
         else{
-            res.send( `Record ${params.report_id} has been updated`).status(200)
+            res.send("UPDATED")
         }
-        console.log(req.body)
     })
 })
 
