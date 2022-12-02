@@ -6,7 +6,7 @@ const app = express()
 const connection = require ('../DATABASE/database')
 //*****************************JOB CARD************************************ */
 //GET DATA
-app.get('/get_jobcard', (req,res) => {
+app.get('/jobcard', (req,res) => {
     let sql = `SELECT * FROM jobcard`
     connection.query(sql,(err,results)=>{
         // if(err) throw err
@@ -27,7 +27,7 @@ app.get('/get_jobcard', (req,res) => {
     })
 })
 //GET DATA BY ID
-app.get('/get_jobcard/:id', (req,res) => {
+app.get('/jobcard/:id', (req,res) => {
     let sql = `SELECT * FROM jobcard WHERE jobcard_id ='${req.params.id}' `
     connection.query(sql, [req.params.id], (err,results)=>{
         if(err) throw err
@@ -54,13 +54,13 @@ app.post('/post_jobcard', (req,res) => {
     })
 })
 //DELETE DATA
-// app.delete('/delete_jobcard/:id',(req,res)=>{
-//     let sql = `DELETE * FROM jobcard WHERE jobcard_id ='${req.params.id}' `
-//     connection.query(sql, [req.params.id], (err,results)=>{
-//         if(err) throw err
-//         else{
-//             res.send(results).status(200)
-//         }
-//     })
-// })
+app.delete('/jobcard/:id', (req,res) => {
+    let sql = `DELETE FROM jobcard WHERE jobcard_id ='${req.params.id}' `
+    connection.query(sql, [req.params.id], (err,results)=>{
+        if(err) throw err
+        else{
+            res.send(`RECORD '${req.params.id}' HAS BEEN DELETED`).status(200)
+        }
+    })
+})
 module.exports = app;

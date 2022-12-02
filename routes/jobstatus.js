@@ -9,9 +9,16 @@ const connection = require ('../DATABASE/database')
 app.get('/jobstatus', (req,res) => {
     let sql = `SELECT * FROM jobstatus`
     connection.query(sql,(err,results)=>{
-        if(err) throw err
-        else{
-            res.send(results).status(200)
+        if(err)
+        {
+            console.log(err,'errs');
+        }
+        if(results.length>0)
+        {
+            res.send({
+                message:'View list of requests',
+                data:results
+            })
         }
     })
 })

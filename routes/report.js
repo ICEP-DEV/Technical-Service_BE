@@ -7,12 +7,19 @@ const connection = require ('../DATABASE/database')
 
 //*****************************REPORT*************************************** */
 //GET DATA
-app.get('/report', (req,res) => {
+app.get('/get_report', (req,res) => {
     let sql = `SELECT * FROM report`
     connection.query(sql,(err,results)=>{
-        if(err) throw err
-        else{
-            res.send(results).status(200)
+        if(err)
+        {
+            console.log(err,'errs');
+        }
+        if(results.length>0)
+        {
+            res.send({
+                message:'View list of requests',
+                data:results
+            })
         }
     })
 })
@@ -20,9 +27,16 @@ app.get('/report', (req,res) => {
 app.get('/report/:id', (req,res) => {
     let sql = `SELECT * FROM report WHERE report_id ='${req.params.id}' `
     connection.query(sql, [req.params.id], (err,results)=>{
-        if(err) throw err
-        else{
-            res.send(results).status(200)
+        if(err)
+        {
+            console.log(err,'errs');
+        }
+        if(results.length>0)
+        {
+            res.send({
+                message:'View list of requests',
+                data:results
+            })
         }
     })
 })
