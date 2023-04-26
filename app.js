@@ -1,123 +1,38 @@
 const express = require('express')
-const bodyParser = require('body-parser')
-const mysql = require('mysql')
+const bodyParser = require('body-parser')   //to pass json data
+const mysql = require('mysql2')
+const cors = require ('cors')
 
-const app = express()
-const port = process.env.PORT || 5000
+const app = express() //app stores all the methods
+const port = process.env.PORT || 3000 //for publishing app
 
-app.use(bodyParser.urlencoded({ extended: false}))
+//WORKING WITH AN IMAGE
+const fs = require('fs')    //file system module
+const multer = require('multer')
 
+//ROUTES
+const jobcard = require('./routes/jobcard')
+const image = require('./routes/image')
+// const email = require('./routes/email')
+const registration = require('./routes/registration')
+const response = require('./routes/response')
+const jobstatus = require('./routes/jobstatus')
+const report = require('./routes/report')
+
+app.use(bodyParser.urlencoded({ extended: false})) //ensure xampp is using the body parser
 app.use(bodyParser.json())
+app.use(cors({origin:"*"}))
+app.use('/',jobcard)
+app.use('/',image)
+// app.use('/',email)
+app.use('/',registration)
+app.use('/',response)
+app.use('/', jobstatus)
+app.use('/', report)
 
-//MySQL
-const pool = mysql.createPool({
-    connectionLimit : 10,
-    host            : 'localhost',
-    user            : 'root',
-    password        : '',
-    database        : 'technical_services'
+app.use('/', (req, res)=>{
+res.json('Endpoint')
 })
 
-//Get all reports
-app.get('', (req, res) => {
-    pool.getConnection((err, connection) =>{
-        if(err) throw err
-        console.log(' connected as id ${connection.threadId}')
-
-        connection.query(' SELECT * from report', (err, rows) => {
-            connection.release()// return the connection to pool
-
-            if(!err) {
-                res.send(rows)
-            }else {'';;
-                console.log(err) 
-            }
-        })
-    })
-})  
-
-//Get a report by ID
-app.get('/:id', (req, res) => {
-    pool.getConnection((err, connection) =>{
-        if(err) throw err
-        console.log(' connected as id ${connection.threadId}')
-
-        connection.query(' SELECT  from report WHERE report_id = ?',[req.params.id], (err, rows) => {
-            connection.release()// return the connection to pool
-
-            if(!err) {
-                res.send(rows)
-            }else {
-                console.log(err)
-            }
-        })
-    })
-})
-
-//Get all users
-app.get('', (req, res) => {
-    pool.getConnection((err, connection) =>{
-        if(err) throw err
-
-        console.log(' connected as id ${connection.threadId}')
-
-        connection.query(' SELECT * from user', (err, rows) => {
-            connection.release()// return the connection to pool
-
-            if(!err) {
-                res.send(rows)
-            }else {
-                console.log(err)
-            }
-        })
-    })
-})  
-
-
-//Get all feedback
-app.get('', (req, res) => {
-    pool.getConnection((err, connection) =>{
-        if(err) throw err
-        console.log(' connected as id ${connection.threadId}')
-
-        connection.query(' SELECT * from feedback', (err, rows) => {
-            connection.release()// return the connection to pool
-
-            if(!err) {
-                res.send(rows)
-            }else {
-                console.log(err)
-            }
-        })
-    })
-})  
-
-//Get all request
-app.get('', (req, res) => {
-    pool.getConnection((err, connection) =>{
-        if(err) throw err
-        console.log(' connected as id ${connection.threadId}')
-
-        connection.query(' SELECT * from request', (err, rows) => {
-            connection.release()// return the connection to pool
-
-            if(!err) {
-                res.send(rows)
-            }else {
-                console.log(err)
-            }
-        })
-    })
-})  
-
-
-
-
-
-
-
-
-
-
-//Listen on environment port or 5000
+//Listen on environment port or 3000
 app.listen(port, () => console.log(`Listen on port ${port}`))
